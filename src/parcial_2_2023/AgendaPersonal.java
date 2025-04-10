@@ -39,6 +39,7 @@ public class AgendaPersonal extends Agenda{
 	@Override
 	protected boolean esDestacada(Tarea t) {
 		if (t.plazo().equals(LocalDate.now()) && this.isUrgente(t)) {
+			
 			return true;
 		}
 		return false;
@@ -53,7 +54,7 @@ public class AgendaPersonal extends Agenda{
 
 	@Override
 	public String toString() {
-		return "AgendaPersonal [urgentes=" + urgentes + "]";
+		return "AgendaPersonal [" + super.toString() + " urgentes=" + urgentes + "]";
 	}
 
 	

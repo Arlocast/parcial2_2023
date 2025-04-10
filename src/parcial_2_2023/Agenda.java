@@ -29,7 +29,7 @@ public abstract class Agenda {
 	
 	public List<Tarea> getTareasPorFecha(LocalDate fecha){
 		LinkedList<Tarea> tareasDeEsaFecha = tareasPorFecha.get(fecha);
-		if (tareasDeEsaFecha.equals(null)) {
+		if (tareasDeEsaFecha == null) {
 			return Collections.emptyList();
 		}
 		return Collections.unmodifiableList(tareasDeEsaFecha);
@@ -73,11 +73,15 @@ public abstract class Agenda {
 	
 	public boolean agregarTarea(Tarea t) {
 		
-		// En caso de que la clave no exista la creamos
-		tareasPorFecha.putIfAbsent(t.plazo(), new LinkedList<Tarea>());
-		
 		// Me da las tareas asociadas a ese plazo
 		LinkedList<Tarea> tareas = tareasPorFecha.get(t.plazo()); 
+		
+		// En caso de que la clave no exista la creamos
+		if (tareas == null) tareas = new LinkedList<Tarea>();
+		
+		// La añadimos a la lista y al mapa
+		tareas.add(t);
+		tareasPorFecha.put(t.plazo(), tareas);
 
 		// Comprobar que no esté repetida. Es decir acceder al mapa en esa fecha y ver si ya hay una tarea con esa misma desc
 		for (Tarea tarea : tareas) {
@@ -122,4 +126,11 @@ public abstract class Agenda {
 		
 		return copia;
 	}
+
+	@Override
+	public String toString() {
+		return "todas=" + todas + ", completas=" + completas + ", tareasPorFecha=" + tareasPorFecha;
+	}
+	
+	
 }
