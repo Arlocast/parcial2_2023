@@ -13,6 +13,6 @@ public record Tarea(String descripcion, LocalDate plazo) {
 	}
 	
 	public boolean isVencida() {
-		return plazo() != null && plazo().isAfter(LocalDate.now());
+		return plazo() != null && plazo().isBefore(LocalDate.now());
 	}
 }
