@@ -2,23 +2,23 @@ package parcial_2_2023;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AgendaPersonal extends Agenda{
 
 	// Atributos
-	private LinkedList<Tarea> urgentes;
+	private HashSet<Tarea> urgentes;
 	
 	// Constructor
 	public AgendaPersonal() {
 		super();
-		this.urgentes = new LinkedList<Tarea>();
+		this.urgentes = new HashSet<Tarea>();
 	}
 	
 	// Getters and Setters
-	public List<Tarea> getUrgentes(){
-		return Collections.unmodifiableList(urgentes);
+	public Set<Tarea> getUrgentes(){
+		return Collections.unmodifiableSet(urgentes);
 	}
 	
 	public boolean setUrgente(Tarea t) {
@@ -48,7 +48,7 @@ public class AgendaPersonal extends Agenda{
 	@Override
 	public AgendaPersonal clone() throws CloneNotSupportedException {
 		AgendaPersonal copia = (AgendaPersonal) super.clone();
-		copia.urgentes = new LinkedList<Tarea>(urgentes);
+		copia.urgentes = new HashSet<Tarea>(urgentes);
 		return copia;
 	}
 

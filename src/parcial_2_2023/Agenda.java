@@ -4,11 +4,10 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Agenda {
+public abstract class Agenda implements Cloneable{
 
 	// Atributos
 	private LinkedList<Tarea> todas;
@@ -58,17 +57,19 @@ public abstract class Agenda {
 		for (Tarea t : this.getPendientes()) {
 			plazosPendientes.add(t.plazo()); // No comprueba duplicados
 		}
+		Collections.sort(plazosPendientes); // Ordena la lista de plazos
 		return plazosPendientes;
 	}
 	
 	protected void eliminarTarea(Tarea t) {
-		Iterator<Tarea> iterador = todas.iterator();
-		while(iterador.hasNext()) {
-			Tarea sig = iterador.next();
-			if (sig.equals(t)) {
-				iterador.remove(); // Elimina el último elemento retornado por iterator.next()
-			}
+		LinkedList<Tarea> tareas = tareasPorFecha.get(t.plazo()); 
+		if (tareas == null) return;
+		if (!tareas.contains(t)) {
+			return;
 		}
+		tareas.remove(t);
+		tareasPorFecha.put(t.plazo(), tareas);
+		todas.remove(t);
 	}
 	
 	public boolean agregarTarea(Tarea t) {
@@ -80,15 +81,12 @@ public abstract class Agenda {
 		if (tareas == null) tareas = new LinkedList<Tarea>();
 		
 		// La añadimos a la lista y al mapa
+		if (tareas.contains(t)) {
+			return false;
+		}
 		tareas.add(t);
 		tareasPorFecha.put(t.plazo(), tareas);
 
-		// Comprobar que no esté repetida. Es decir acceder al mapa en esa fecha y ver si ya hay una tarea con esa misma desc
-		for (Tarea tarea : tareas) {
-			if (tarea.descripcion().equals(t.descripcion())){
-				return false;
-			}
-		}
 		todas.add(t);
 		return true;
 	}
